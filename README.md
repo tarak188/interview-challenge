@@ -1,113 +1,269 @@
-# 🚀 Oxyera Async Interview Challenge
+# Digital Health Workflow Management System
 
-Hi! 👋 Welcome to the Oxyera async technical challenge. This test will help us evaluate your independence, code quality, organization, and technical decisions without ambiguity, so you can focus on delivering your best work.
+A full-stack application for managing patients, medications, and treatment assignments in a digital health workflow. Built with NestJS backend and Next.js frontend.
 
----
+## 🏗️ Architecture Overview
 
-## 🎯 The Challenge
+This application follows the **MVC (Model-View-Controller)** pattern:
 
-### 📝 Description
+- **Models**: TypeORM entities representing database tables
+- **Views**: Next.js React components for the user interface
+- **Controllers**: NestJS controllers handling HTTP requests
+- **Services**: Business logic layer between controllers and models
 
-In this async challenge, you will build a full-stack mini-app to manage patients, medications, and their treatment assignments for a digital health workflow.
+## 🚀 Features
 
-You will implement CRUD APIs using NestJS with a SQLite database (already configured) and a minimal Next.js frontend to interact with these APIs. A patient can have multiple medication assignments, and you will implement logic to calculate the remaining days of each treatment automatically.
+### Backend (NestJS - Port 8080)
+- **Patient Management**: CRUD operations for patient records
+- **Medication Management**: CRUD operations for medication catalog
+- **Assignment Management**: Assign medications to patients with treatment schedules
+- **Remaining Days Calculation**: Automatic calculation of treatment remaining days
+- **Input Validation**: Comprehensive validation using class-validator
+- **Error Handling**: Proper HTTP status codes and error responses
+- **Unit Testing**: Test coverage for core business logic
 
-The goal is to evaluate your ability to:
+### Frontend (Next.js - Port 3000)
+- **Dashboard**: Overview of patients and active treatments
+- **Patient Management**: Create, view, and manage patient records
+- **Medication Management**: Create and manage medication catalog
+- **Assignment Management**: Assign medications to patients with visual remaining days
+- **Responsive Design**: Modern UI with Tailwind CSS
+- **Type Safety**: Full TypeScript implementation
 
-- Deliver clear, scalable, maintainable code.
+## 📁 Project Structure
 
-- Handle clean API design and testing.
+```
+interview-challenge/
+├── backend/                 # NestJS Backend
+│   ├── src/
+│   │   ├── patient/         # Patient module (MVC)
+│   │   ├── medication/      # Medication module (MVC)
+│   │   ├── assignment/      # Assignment module (MVC)
+│   │   ├── app.module.ts    # Main application module
+│   │   └── main.ts          # Application entry point
+│   ├── database.sqlite      # SQLite database
+│   └── package.json         # Backend dependencies
+├── frontend/                # Next.js Frontend
+│   ├── app/
+│   │   ├── patients/        # Patient pages
+│   │   ├── medications/     # Medication pages
+│   │   ├── assignments/     # Assignment pages
+│   │   ├── api.ts           # API service functions
+│   │   ├── types.ts         # TypeScript type definitions
+│   │   └── constants.ts     # Application constants
+│   └── package.json         # Frontend dependencies
+└── README.md               # This file
+```
 
-- Build a simple, functional UI connected to your backend.
+## 🛠️ Technology Stack
 
-- Manage your workflow independently with clear commits.
+### Backend
+- **NestJS**: Progressive Node.js framework
+- **TypeORM**: Object-Relational Mapping
+- **SQLite**: Lightweight database
+- **class-validator**: Input validation
+- **Jest**: Testing framework
 
-This test simulates real work at Oxyera: you will receive a task, execute it end-to-end, and submit it for review, demonstrating your ownership and technical skills without requiring continuous oversight.
+### Frontend
+- **Next.js 15**: React framework with App Router
+- **TypeScript**: Type-safe JavaScript
+- **Tailwind CSS**: Utility-first CSS framework
+- **React Hooks**: State management
 
-### ✅ What will you implement 
+## 🚀 Getting Started
 
-✅ **Backend (NestJS, runs on port **`8080`**)**
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn package manager
 
-- CRUD endpoints for:
-  - `Patient` (name, date of birth)
-  - `Medication` (name, dosage, frequency)
-  - `Assignment` (assign a medication to a patient with a start date and number of days)
-- **A patient can have multiple medication assignments**.
-- Endpoint to calculate and return **remaining days of treatment** for each assignment (based on start date + days - today).
-- Endpoints should:
-  - Return clear, structured JSON.
-  - Validate input (e.g., required fields, valid dates).
-  - Return appropriate HTTP status codes.
-  - Be covered with at least **one unit test for calculation logic**.
+### Backend Setup
 
-✅ **Frontend (Next.js, runs on port **`3000`**)**
+1. **Install dependencies**:
+   ```bash
+   cd backend
+   npm install
+   ```
 
-- Multiple pages with Tailwind for styling.
-- Features:
-  - List patients with their assignments and remaining treatment days.
-  - Forms to create:
-    - Patients
-    - Medications
-    - Assign medications to patients.
-- Display **remaining treatment days clearly per assignment**.
-- Use a **global constant for backend URL** for clarity.
+2. **Start development server**:
+   ```bash
+   npm run start:dev
+   ```
 
-✅ Use the **SQLite DB already configured in** `/backend/database.sqlite`.
+3. **Run tests**:
+   ```bash
+   npm run test
+   ```
 
-✅ Commit clearly and progressively, showing your reasoning in your commit messages.
+The backend will be available at `http://localhost:8080`
 
-✅ Use **TypeScript** everywhere.
+### Frontend Setup
 
-✅ Structure your code cleanly to reflect scalability.
+1. **Install dependencies**:
+   ```bash
+   cd frontend
+   npm install
+   ```
 
----
+2. **Start development server**:
+   ```bash
+   npm run dev
+   ```
 
-## ⚡ What We’re Evaluating
+The frontend will be available at `http://localhost:3000`
 
-- Clear and scalable folder structure.
-- Proper API design and HTTP handling.
-- Input validation and error handling.
-- Consistent, readable code.
-- Use of TypeScript types for safety.
-- Test quality and coverage of core logic.
-- Ability to deliver a working feature with clean commits.
-- UI clarity and correct functional connection with your backend.
+## 📊 Database Schema
 
----
+### Patient Table
+- `id` (Primary Key): Unique identifier
+- `name` (VARCHAR): Patient's full name
+- `dateOfBirth` (DATE): Patient's date of birth
 
-## 🚀 Running the Project
+### Medication Table
+- `id` (Primary Key): Unique identifier
+- `name` (VARCHAR): Medication name
+- `dosage` (VARCHAR): Dosage information
+- `frequency` (VARCHAR): Administration frequency
 
-**Backend:**
+### Assignment Table
+- `id` (Primary Key): Unique identifier
+- `patientId` (Foreign Key): Reference to Patient
+- `medicationId` (Foreign Key): Reference to Medication
+- `startDate` (DATE): Treatment start date
+- `numberOfDays` (INTEGER): Treatment duration in days
+
+## 🔌 API Endpoints
+
+### Patients
+- `GET /patients` - Get all patients
+- `GET /patients/:id` - Get patient by ID
+- `POST /patients` - Create new patient
+- `PATCH /patients/:id` - Update patient
+- `DELETE /patients/:id` - Delete patient
+
+### Medications
+- `GET /medications` - Get all medications
+- `GET /medications/:id` - Get medication by ID
+- `POST /medications` - Create new medication
+- `PATCH /medications/:id` - Update medication
+- `DELETE /medications/:id` - Delete medication
+
+### Assignments
+- `GET /assignments` - Get all assignments
+- `GET /assignments/:id` - Get assignment by ID
+- `POST /assignments` - Create new assignment
+- `PATCH /assignments/:id` - Update assignment
+- `DELETE /assignments/:id` - Delete assignment
+- `GET /assignments/with-remaining-days` - Get assignments with calculated remaining days
+- `GET /assignments/patient/:patientId/with-remaining-days` - Get patient's assignments with remaining days
+
+## 🧪 Testing
+
+### Backend Tests
+The backend includes unit tests for the assignment service, specifically testing the remaining days calculation logic:
 
 ```bash
 cd backend
-npm install
-npm run start:dev
+npm run test
 ```
 
-Access on `http://localhost:8080`.
+### Test Coverage
+- Assignment service calculation logic
+- Edge cases for date calculations
+- Future, ongoing, and completed treatments
 
-**Frontend:**
+## 🎨 Frontend Features
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+### Dashboard
+- Overview of patients and active treatments
+- Quick access to management pages
+- Visual indicators for treatment status
 
-Access on `http://localhost:3000`.
+### Patient Management
+- List all patients with basic information
+- Create new patients with validation
+- View detailed patient information
+- Delete patients (with confirmation)
 
-The SQLite database is located at `backend/database.sqlite`.
+### Medication Management
+- List all medications with dosage and frequency
+- Create new medications
+- Delete medications (with confirmation)
+
+### Assignment Management
+- List all assignments with remaining days
+- Create new assignments with patient and medication selection
+- Visual indicators for treatment urgency (red/yellow/green)
+- Delete assignments (with confirmation)
+
+## 🔧 Configuration
+
+### Backend Configuration
+- Database: SQLite (`database.sqlite`)
+- Port: 8080 (configurable via environment variable)
+- CORS: Enabled for frontend origin
+- Validation: Global validation pipe enabled
+
+### Frontend Configuration
+- Backend URL: `http://localhost:8080` (configurable in `constants.ts`)
+- Port: 3000
+- API endpoints: Centralized in `constants.ts`
+
+## 🚨 Error Handling
+
+### Backend
+- Input validation using class-validator
+- Proper HTTP status codes
+- Detailed error messages
+- Global exception handling
+
+### Frontend
+- API error handling with user-friendly messages
+- Loading states for better UX
+- Form validation
+- Confirmation dialogs for destructive actions
+
+## 📝 Development Guidelines
+
+### Code Style
+- Use TypeScript for type safety
+- Follow NestJS conventions for backend
+- Use React hooks and functional components
+- Implement proper error handling
+- Write meaningful commit messages
+
+### Best Practices
+- Validate all user inputs
+- Handle loading and error states
+- Use proper HTTP status codes
+- Implement proper database relationships
+- Test critical business logic
+
+## 🔄 Deployment
+
+### Backend Deployment
+1. Build the application: `npm run build`
+2. Start production server: `npm run start:prod`
+3. Ensure database file is accessible
+4. Configure environment variables
+
+### Frontend Deployment
+1. Build the application: `npm run build`
+2. Start production server: `npm run start`
+3. Update backend URL in constants if needed
+
+## 🤝 Contributing
+
+1. Follow the existing code structure
+2. Add tests for new features
+3. Update documentation as needed
+4. Use meaningful commit messages
+5. Test thoroughly before submitting
+
+## 📄 License
+
+This project is part of a technical assessment and is not licensed for commercial use.
 
 ---
 
-## 📩 Submission
-
-✅ Complete by one week after you recieved the assignment. 
-
-✅ Push to your your personal forked repo. 
-
-✅ Email your repo link to [dev@oxyera.com](mailto\:dev@oxyera.com).
-
-Thank you for your interest in Oxyera. We look forward to reviewing your structured, clear, and working solution!
+**Note**: This application is designed for educational and assessment purposes. In a production environment, additional security measures, logging, monitoring, and error handling would be implemented.
 
